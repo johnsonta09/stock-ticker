@@ -1,4 +1,7 @@
 import sys
+import asyncio
+import json
+from fastapi.responses import StreamingResponse
 
 if sys.version_info < (3, 7):
     raise ImportError(
@@ -22,13 +25,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-SYMBOLS = ["AAPL", "META", "TSLA", "NVDA", "AMZN", "NBIS", "PLTR", "VELO", "OPEN", "ABNB", "NFLX",
-    "HIMS", "^GSPC", "^IXIC", "^DJI"]
+from symbols import SYMBOLS
 
-@app.get("/stocks")
-def get_stocks():
-    
-    data = []
+STREAM_INTERVAL_SEC = 2.0  # tune: lower = snappier UI, higher Yahoo block risk
+
+def build_stocks_data() -> list[dict]:
+    data: list[dict] = []
     for symbol in SYMBOLS:
         ticker = yf.Ticker(symbol)
         info = ticker.history(period="1d")
@@ -57,4 +59,28 @@ def get_stocks():
         except (IndexError, ValueError, TypeError):
             continue
 
-    return {"data": data}
+    return data
+
+@app.get("/stocks")
+def get_stocks():
+    return {"data": build_stocks_data()}
+
+@app.get("/stocks/stream")
+async def stream_stocks():
+    async def events():
+        while True:
+            loop = asyncio.get_running_loop()
+            rows = await loop.run_in_executor(None, build_stocks_data)
+            payload = json.dumps({"data": rows})
+            yield f"data: {payload}\n\n"
+            await asyncio.sleep(STREAM_INTERVAL_SEC)
+
+    return StreamingResponse(
+        events(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no",
+        },
+    )

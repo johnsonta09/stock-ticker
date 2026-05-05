@@ -1,0 +1,21 @@
+SYMBOLS = [
+    "TSLA", 
+    "NVDA", 
+    "AMZN", 
+    "NBIS", 
+    "PLTR", 
+    "VELO", 
+    "OPEN", 
+    "ABNB", 
+    "NFLX",
+    "HIMS", 
+    "^GSPC", 
+    "^IXIC", 
+    "^DJI",
+    "GM",
+    "AAPL", 
+    "META",
+    "SOFI",
+    "MSTY",
+    "ULTY"
+]
