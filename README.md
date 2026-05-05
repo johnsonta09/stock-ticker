@@ -7,6 +7,16 @@ The app renders a scrolling quote bar and supports click-through behavior when y
 
 ---
 
+## Quick Start
+
+From the project root:
+
+```bash
+npm start
+```
+
+---
+
 ## Requirements
 
 - [Node.js LTS](https://nodejs.org/) (includes `npm`)
