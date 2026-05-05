@@ -74,14 +74,46 @@ Using a **virtual environment** is recommended (e.g. `python -m venv .venv` then
 
 ---
 
-## Run the app (three processes)
+## Run the app (recommended: one command)
+
+After dependencies are installed, start everything from the project root:
+
+```bash
+cd path/to/stock-ticker
+npm start
+```
+
+This starts:
+
+- FastAPI backend on `http://127.0.0.1:8001`
+- Frontend server on `http://localhost:3000`
+- Electron app window
+
+### Root scripts used
+
+The one-command flow expects these root scripts in `package.json`:
+
+- `backend` -> runs Uvicorn in `backend/`
+- `frontend` -> runs frontend server in `frontend/`
+- `electron` -> waits for ports `3000` and `8001`, then starts Electron
+- `start` -> runs all three with `concurrently`
+
+Install root helper dev dependencies if you added this setup:
+
+```bash
+npm install
+```
+
+---
+
+## Run the app (manual: three processes)
 
 The ticker expects:
 
 - **Port 8001** — API (FastAPI / Uvicorn)
 - **Port 3000** — static frontend (`serve`)
 
-Use **three terminals** (or tabs).
+Use **three terminals** (or tabs) if you prefer manual startup.
 
 ### Terminal 1 — Backend
 
@@ -110,7 +142,7 @@ npx electron main.js
 
 The transparent bar loads the UI from `http://localhost:3000` and reads quotes from the API.
 
-> **Note:** Root `package.json` may list `"main": "index.js"`. This repo’s Electron entry file is **`main.js`**, so the command above uses `npx electron main.js`. Alternatively you can change `"main"` to `"main.js"` and run `npx electron .`.
+> **Note:** Root `package.json` should use `"main": "main.js"` for consistency. If set correctly, you can also run `npx electron .`.
 
 ---
 

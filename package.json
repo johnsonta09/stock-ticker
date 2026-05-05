@@ -2,15 +2,23 @@
     "name": "stock-ticker",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "main.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+      "backend": "cd backend && python -m uvicorn main:app --reload --port 8001",
+      "frontend": "npm --prefix frontend start",
+      "electron": "wait-on tcp:3000 tcp:8001 && electron main.js",
+      "start": "concurrently -k -n BACKEND,FRONTEND,ELECTRON -c cyan,green,magenta \"npm run backend\" \"npm run frontend\" \"npm run electron\"",
+      "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "type": "commonjs",
     "dependencies": {
-        "electron": "^41.3.0"
+      "electron": "^41.3.0"
+    },
+    "devDependencies": {
+      "concurrently": "^9.0.1",
+      "wait-on": "^8.0.1"
     }
-}
+  }

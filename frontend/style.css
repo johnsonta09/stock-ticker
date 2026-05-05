@@ -59,14 +59,14 @@ body {
 .ticker-track {
     display: flex;
     width: max-content;
-    animation: scroll 20s linear infinite;
+    animation: scroll 35s linear infinite;
 }
 
 .ticker-item {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-right: 80px;
+    gap: 10px;
+    margin-right: 70px;
     font-size: 18px;
     font-weight: 600;
     white-space: nowrap;
