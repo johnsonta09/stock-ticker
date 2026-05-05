@@ -2,11 +2,12 @@ html, body {
     margin: 0;
     padding: 0;
     overflow: hidden;
+    background: transparent;
 }
 
 body {
     margin: 0;
-    background: black;
+    background: transparent;
     font-family: "Segoe UI", Arial, sans-serif;
     color: white;
 }
